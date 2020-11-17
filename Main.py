@@ -1,6 +1,5 @@
-import re
-import Arbol
-
+#Proyecto 2 de Estructuras  de Datos
+# Por: Oscar Quesada
 
 varTable= dict()
 typeVar = {'void':0,'int':0,'float':0,'string':0}
@@ -20,8 +19,11 @@ def OpenFile():
             linea + 1
         # reading each word
             for word in line.split():
+                # verifica si la palabra es numero entero, flotante o string
+                if word.isnumeric() or VerifyFloat(word) or VerifyString(word):
+                    anterior = word
                 #si la palabra anterior es un tipo de variable o la palabra actual ya fue declarada
-                if anterior in typeVar or word in varTable:
+                elif anterior in typeVar or word in varTable:
                     varTable[word] = 1
               #si la parabra es un tipo de variable
                 elif word in typeVar:
@@ -29,9 +31,6 @@ def OpenFile():
                #si la palabra es algún simbolo
                 elif word in symbolTable:
                     symbolTable[word] = symbolTable[word] + 1
-                # verifica si es numero entero o flotante
-                elif word.isnumeric() or VerifyFloat(word) :
-                    anterior = word
                 else:
                     print("Error en la linea: "+str(linea)+" la variable "+word+" no fue declarada")
                 anterior = word
@@ -41,7 +40,7 @@ def OpenFile():
         #    print(key, ":", symbolTable[key])
     else:
         print('no se pudo abrir el archivo')
-
+# verifica que haya igual cantidad de llaves abiertas que cerradas
 def VerifySymbols():
     if symbolTable['{'] == symbolTable['}']:
 
@@ -49,17 +48,25 @@ def VerifySymbols():
             return True
     else:
         return False
-
+# verifica si un string tiene formato de float
 def VerifyFloat(potential_float):
     try:
         float(potential_float)
         return True
     except ValueError:
         return False
+# verifica si una para es de tipo string
+def VerifyString(word):
+    firstChar = word[0]
+    lastChar = word[-1]
 
+    if firstChar =='“' and lastChar == '”':
+        return True
+    else:
+        return False
 
 OpenFile()
-error = ("Error de sintaxis", "No se encontró error de sintaxis ")[VerifySymbols()]
+error = "No se encontró error de sintaxis " if VerifySymbols() else"Error de sintaxis"
 print(error)
 print(varTable)
 print(typeVar)
