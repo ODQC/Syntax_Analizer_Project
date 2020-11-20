@@ -21,7 +21,7 @@ def OpenFile():
         try:
             for line in file_object:
 
-                li = list(line.split())
+                li = list(line.split("{"))
 
                 numline += 1
                 for word in line.split():
