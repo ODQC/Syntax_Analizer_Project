@@ -28,16 +28,20 @@ def OpenFile():
                     pos = li.index(word)
 
                 #print(pos)
-                    if anterior != None and posterior != None:
+                    try:
                         anterior = li[pos-1]
                         posterior = li[pos+1]
+                    except IndexError:
+                        pass
                 # verifica si la palabra es numero entero, flotante o string
                     if isFunction(anterior,posterior):
                         varTable[word] = {'Tipo':'Metodo','Retorno':anterior,'Alcance':'Global'}
                 #si la palabra anterior es un tipo de variable o la palabra actual ya fue declarada
-                    elif isVar(word) or word in typeVar:
-                        return True
-                    elif anterior in typeVar or word in varTable:
+                    elif isVar(word) or  word in varTable:
+                        pass
+                    elif word in typeVar:
+                        typeVar[word] = typeVar[word]+1
+                    elif anterior in typeVar:
                         insertVar(word,anterior)
                 #si la palabra es algún simbolo
                     elif word in symbolTable:
